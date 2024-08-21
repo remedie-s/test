@@ -19,8 +19,7 @@
     <div class="container-fluid">
       <!-- Small boxes (Stat box) -->
       <div class="row">
-        <div th:each="review : ${paging}"></div>
-        <div th:text="${review}"></div>
+     
       </div>
       <div class="col-12">
         <div class="card">
@@ -49,10 +48,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr th:each="review, idx : ${paging}"></div>
-                  <td th:text="${review}"></td>
-                  <td th:text="${review}"></td>
-                  <td th:text="${review}"></td>
+                <tr th:each="review, idx : ${paging}">
+                  <td th:text="${review.id}"></td>
+                  <td th:text="${review.document}"></td>
+                  <td th:text="${review.label}"></td>
                 </tr>
               </tbody>
             </table>

@@ -24,9 +24,7 @@ public class NaverReviewsController {
 					@RequestParam(value="page", defaultValue = "0") int page ) {
 		//1. 특정 페이지(인자)에 해아되는 페이징 데이터획득
 		Page<NaverReviews> paging = this.naverReviewsService.getList(page);
-		for( NaverReviews n : paging) {
-			System.out.println(n.toString());
-		}
+		
 		//2. html에 전달
 		model.addAttribute("paging", paging);
 		return "naver_reviews_list";
