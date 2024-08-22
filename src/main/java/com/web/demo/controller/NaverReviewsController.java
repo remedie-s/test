@@ -21,23 +21,27 @@ public class NaverReviewsController {
 	// ~/bbs/list?page=1 이런 방식으로 호출
 	@GetMapping("/list")
 	public String list(Model model,
-					@RequestParam(value="page", defaultValue = "0") int page ) {
-		//1. 특정 페이지(인자)에 해아되는 페이징 데이터획득
+					@RequestParam(value="page", defaultValue = "0") int page
+					) {
+		//1. 특정 페이지(인자)에 해당되는 페이징 데이터획득
 		Page<NaverReviews> paging = this.naverReviewsService.getList(page);
 		
 		//2. html에 전달
 		model.addAttribute("paging", paging);
 		return "naver_reviews_list";
 	}
-
+	// 검석어 획득, 검색 작업 실제 진행(서비스 - 레포지토리 처리), 타임리프 전달내용(검색어, 페이징번호)
 	@GetMapping("/list2")
 	public String list2(Model model,
-					@RequestParam(value="page", defaultValue = "0") int page ) {
-		//1. 특정 페이지(인자)에 해아되는 페이징 데이터획득
-		Page<NaverReviews> paging = this.naverReviewsService.getList(page);
+					@RequestParam(value="page", defaultValue = "0") int page ,
+					@RequestParam(value="keyword", defaultValue = "") String keyword ){
+		//1. 특정 페이지(인자)에 해당되는 페이징 데이터획득
+		Page<NaverReviews> paging = this.naverReviewsService.getList2(page,keyword);
 		
 		//2. html에 전달
+		model.addAttribute("keyword", keyword);
 		model.addAttribute("paging", paging);
+		
 		return "naver_reviews_list";
 	}
 

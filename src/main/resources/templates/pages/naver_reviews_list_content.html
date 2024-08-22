@@ -28,8 +28,15 @@
             <div class="card-tools">
               <!--/* 검색 영역 */-->
               <form method="get" th:action="@{/bbs/list2}" id="searchForm">
+                <!--검색어 유지-->
+                <input type="hidden" id="keyword" name="keyword" th:value="${keyword}">
+                <!--페이지값 유지-->
+                <input type="hidden" id="page" name="page" th:value="${paging.number}">
                 <div class="input-group input-group-sm" style="width: 150px;">
-                  <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                  <!--검색어 입력 파트, 화면에 노출되는 영역-->
+                  <input type="text" id="search_keyword" th:value="${keyword}" class="form-control float-right"
+                    placeholder="Search">
+                  <!-- <input type="text" name="table_search" class="form-control float-right" placeholder="Search"> -->
                   <div class="input-group-append">
                     <button type="submit" class="btn btn-default" id="searchBtn">
                       <i class="fas fa-search"></i>
@@ -97,23 +104,49 @@
     // js의 변수 타입은 언제 세팅? = > 값이 세팅되면 그 때 타입이 결정됨
     // 순수 js로 기술
 
+    // 이전, 1,2,3 ... 다음 페이징링크요소 공통적으로 class값이 page-link 였다
     // 현 문서상에 존재하는 모든 요소들 중에, 클래스 값이 page-link인 모든 요소를 다 찾아라
     // document.getElementsByClassName("page-link"); => $(".page-link");
-    const links = document.getElementsByClassName("page-link");
+    const links = document.getElementsByClassName("page-link"); //배열로 반환
     console.log(links);
 
     // 검색버튼 클릭 이벤트 잡아서 처리
     // 검색 버튼을 특정해서, 해당 버튼에 이벤트 등록(재정의) 한다.
     // searchBtn.addEventListener('click', function(e){
-    	//e.preventDefault(); <== 이벤트 무효화
-    	//return false;
+    //e.preventDefault(); <== 이벤트 무효화
+    //return false;
     const searchBtn = document.getElementById("searchBtn");
+    // 2. 해당 버튼에 이벤트 등록한다.
+    // 이벤트명 'click'사전에 정의 되어있다
+    // 클릭 이벤트가 발생되면 -> 잠시후에 리스너에 등록된 이벤트 처리함수 ( 콜백함수)가 자동으로 호출된다.
     searchBtn.addEventListener('click', (e) => {
       e.preventDefault();
       // 하고 싶은 작업 진행
       console.log("버튼 클릭 이벤트 처리")
+      // 2. 검색어 입력 태그를 특정해서, 검색어값 세팅
+      document.getElementById("keyword").value
+        = document.getElementById("search_keyword").value;
+      // 3. 페이징 번호(값) 입력 태그에 세팅
+      document.getElementById("page").value = 0;
+      // 4. 폼 테그를 특정해서 서버에 전송(submit 이벤트(행위)를 진행)
+      document.getElementById("searchForm").submit();
       return false;
     })
+    /*
+    표준 함수(함수==메소드)
+    자바의 표준 메소드 문법
+    [모디파이어(접근제어자(public private), 일반 모디파이어(final static abstract...)),]
+    리턴타입 (프리미티브 8개 참조형 무한대 없음(보이드 1개))
+    [스테이트먼트] ;
+    [return [값] ];
+  }
 
+    자바스크립트 표준함수
+    fuction [함수명] (인자) {
+    [스테이트먼트] ;
+    [return [값] ];
+    }
+    
+    */
   </script>
 </div>
