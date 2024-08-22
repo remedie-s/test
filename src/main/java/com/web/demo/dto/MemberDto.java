@@ -17,13 +17,16 @@ public class MemberDto {
 	private int age;
 	private String name;
 	private String addr ;
+	private String _csrf;
 	@Builder
-	public MemberDto(int age, String name, String addr) {
+	public MemberDto(int age, String name, String addr, String _csrf) {
 		super();
 		this.age = age;
 		this.name = name;
 		this.addr = addr;
+		this._csrf = _csrf;
 	}
+	
 	
 	
 	

@@ -8,6 +8,12 @@
  */
 package com.web.demo.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,10 +23,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.web.demo.dto.FileUploadResultDto;
 import com.web.demo.dto.MemberDto;
 
 import jakarta.servlet.http.HttpServletRequest;
-
+import lombok.extern.slf4j.Slf4j;
+// 롬복에서 제공하는 자바 로깅 API
+@Slf4j
 @RequestMapping("/file")
 @Controller
 public class FileApiController {
@@ -34,18 +43,35 @@ public class FileApiController {
 	// 일반 데이터 + 파일 동시 전송
 	@PostMapping("/upload")
 	@ResponseBody
-	public String upload( MemberDto member,// 나이, 이름, 주소 정보를 통으로 받아서 전달
+	public ResponseEntity<FileUploadResultDto> upload( 
+//			MemberDto member,// 나이, 이름, 주소 정보를 통으로 받아서 전달
 			@RequestParam("uploadFile") MultipartFile uploadFile, // 파일을 받아서 전달
 			HttpServletRequest req) {
 		// 1. 파일 저장할 결로 획득 (여기서는 톰캣 내부, 실제로는 클라우드의 스토리지 선택)
 		String path = req.getServletContext().getRealPath("");// 저장할 위치(서버측)
 		System.out.println("path:"+path);
 		String filename = uploadFile.getOriginalFilename();// 파일명
-		// 2. 저장
-		// 3. 결과 응답
+		System.out.println("filename : "+filename);
+		// 2. 저장->클라우드상의 스토리지에 저장 권장
+		try {
+			log.info(path+"/"+filename);
+			File file = new File(path+"/"+filename);
+			BufferedOutputStream bos =new BufferedOutputStream(new FileOutputStream(file));
+			// 데이터가 흘러감 : MultipartFile -> 출력 스트림 -> file
+			bos.write(uploadFile.getBytes());
+			bos.close();
+		} catch (Exception e) {
+			log.error("파일 저장시 오류"+ e.getMessage());
+			FileUploadResultDto res = FileUploadResultDto.builder().code(-1).message(e.getMessage()).build();
+			return ResponseEntity.status(HttpStatus.OK).body(res);
+			
+		}
 		
-		
-		return "응답";
+		// 3. 결과 응답-> dto -> json 형태
+//		return "응답";
+		// dto 생성(데이터 세팅) => json 응답
+		FileUploadResultDto res = FileUploadResultDto.builder().code(1).message(filename).build();
+		return ResponseEntity.status(HttpStatus.OK).body(res);
 	}
 	// 파일 다운로드 실제 처리 제공
 //	@RequestMapping("/upload")
