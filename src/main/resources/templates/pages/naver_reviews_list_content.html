@@ -70,7 +70,12 @@
             <ul class="pagination pagination-sm m-0 float-right">
               <!--* 이전, 1페이지씩 쉬프트, 이전 페이지가 없다면 비활성처리(disabled 속성) *-->
               <li class="page-item" th:classappend="${ !paging.hasPrevious } ? 'disabled' ">
-                <a class="page-link" th:href="@{|?page=${paging.number-1}|}">«</a>
+                <!-- <a class="page-link" th:href="@{|?page=${paging.number-1}|}">«</a> -->
+                <!-- javascript:void(0) : a 요소의 이벤트 무효화(링크기능), 
+                      스크립트에 등록된 이벤트(click)로 전달, 데이터는 data-page 설정된 값을 가져간다 -->
+                <a class="page-link" href="javascript:void(0)" th:data-page="${paging.number-1}">
+                  <span>«</span>
+                </a>
               </li>
 
               <!--* 
@@ -84,12 +89,19 @@
               <li th:each="page : ${ #numbers.sequence(0, paging.totalPages-1) }"
                 th:classappend="${page == paging.number} ? 'active' "
                 th:if="${paging.number-5 <= page and paging.number+5 >= page }" class="page-item">
-                <a class="page-link" th:href="@{|?page=${page}|}" th:text="${page+1}"></a>
+                <!-- <a class="page-link" th:href="@{|?page=${page}|}" th:text="${page+1}"></a> -->
+                <a class="page-link" 
+                    href="javascript:void(0)" 
+                    th:data-page="${page}"
+                    th:text="${page+1}"></a>
               </li>
 
-              <!--* 이후 *-->
+              <!--* 다음 *-->
               <li class="page-item" th:classappend="${ !paging.hasNext } ? 'disabled' ">
-                <a class="page-link" th:href="@{|?page=${paging.number+1}|}">»</a>
+                <!-- <a class="page-link" th:href="@{|?page=${paging.number+1}|}">»</a> -->
+                <a class="page-link" href="javascript:void(0)" th:data-page="${paging.number+1}">
+                  <span>»</span>
+                </a>
               </li>
             </ul>
           </div>
@@ -108,7 +120,19 @@
     // 현 문서상에 존재하는 모든 요소들 중에, 클래스 값이 page-link인 모든 요소를 다 찾아라
     // document.getElementsByClassName("page-link"); => $(".page-link");
     const links = document.getElementsByClassName("page-link"); //배열로 반환
-    console.log(links);
+    console.log("페이징 요소의 개수", links.length);
+    //배열에서 하나씩 꺼내서 클릭 이벤트 등록- 반복문
+    Array.from(links).forEach( (link)=>{
+      // 요소 확인해봄
+      // console.log(link);
+      // 요소 하나하나에 클릭 이벤트 등록
+      link.addEventListener('click', function(e) {
+        console.log(this.dataset.page); // 페이지 번호
+        document.getElementById("page").value = this.dataset.page;
+        document.getElementById("searchForm").submit();
+
+      })
+    })
 
     // 검색버튼 클릭 이벤트 잡아서 처리
     // 검색 버튼을 특정해서, 해당 버튼에 이벤트 등록(재정의) 한다.
@@ -116,7 +140,7 @@
     //e.preventDefault(); <== 이벤트 무효화
     //return false;
     const searchBtn = document.getElementById("searchBtn");
-    // 2. 해당 버튼에 이벤트 등록한다.
+    // 2. 해당 버튼에 이벤트 등록(재 정의)한다.
     // 이벤트명 'click'사전에 정의 되어있다
     // 클릭 이벤트가 발생되면 -> 잠시후에 리스너에 등록된 이벤트 처리함수 ( 콜백함수)가 자동으로 호출된다.
     searchBtn.addEventListener('click', (e) => {

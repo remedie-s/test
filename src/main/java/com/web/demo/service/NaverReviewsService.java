@@ -93,6 +93,7 @@ public class NaverReviewsService {
 //						criteriaBuilder.like(r2.get("question"), "%"+keyword+"%"),
 //						criteriaBuilder.like(r2.get("answer"), "%"+keyword+"%")
 //						);
+
 						
 				}
 		};
