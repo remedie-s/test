@@ -2,6 +2,7 @@ package com.web.demo.dto;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.web.demo.entity.Post;
 
 import groovy.transform.ToString;
@@ -19,6 +20,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class PostForm {
+	
 	@Transient
 	private Integer id;
 	
