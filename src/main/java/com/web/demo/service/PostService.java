@@ -60,6 +60,8 @@ public class PostService {
 		this.postRepository.save(p);
 		// 실습 2분		
 	}
+	
+	
 
 	// Post 수정하기 기능
 	public void modify(Post post) {
@@ -68,6 +70,13 @@ public class PostService {
 
 	public void delete(Post post) {
 		this.postRepository.delete(post);
+	}
+	
+	
+	public Post createEx(Post p) {
+		this.postRepository.save(p);
+		return p;
+		
 	}
 }
 
