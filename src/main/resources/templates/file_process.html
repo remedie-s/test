@@ -38,6 +38,10 @@
           <button id="btnUpload" class="btn btn-success">파일 업로드</button>
         </div>
       </form>
+    <br>
+    <button id="btnDownload" class="btn btn-info">파일 다운로드</button>
+    <!-- 임시로 저장된 파일명 저장 -->
+    <input type="hidden" id="uploadFileName">
     </div>
   </div>
   <!-- /.login-box -->
@@ -49,6 +53,16 @@
   <!-- AdminLTE App -->
   <script src="/dist/js/adminlte.min.js"></script>
   <script>
+  
+  	// 파일 다운로드
+  	$("#btnDownload").on('click',function (e){
+  		//document.location.href 생략
+  		//현재 페이지를 특정페이지로 이동
+  	// location.href="https://www.naver.com";
+  	// 방금 업로드한 파일을 바로 다운 받을 수있게 업로드된 파일명 html 특정 요소에 저장해서 사용(임시 방편)
+  	location.href="/file/download?filename=" + $("#uploadFileName").val();	
+  	});
+  	
     // 최적 위치중 하나 = > body 태그 닫히기 직전
     // jquery => 요소 특정하는 방법 => $("css selector"), id로 찾을떄는 #아이디값
     // 1. 파일 업로드 버튼 특정(찾는방법 css selector | xpath | ...)
@@ -66,6 +80,14 @@
         cache: false,
         success: function (res) {                // 통신 성공하면 등록한 함수가 호출됨
           console.log(res)
+          if( res.code ==-1){
+        	  alert("파일 업로드 실패")
+          }else if(res.code ==1){
+        	  alert("파일 업로드 성공"+ res.message);
+        	// 문서상에 존재하는 모든 요소들 중에 아이디가 uploadFileName인 요소를 찾아서
+       		// value 속성에 res.message를 세팅한다
+        	  $("#uploadFileName").val( res.message ); 
+          }
         },
         error: function (err) {                 // 통신 실패하면 등록한 함수가 호출됨
           alert("오류:" + err)
