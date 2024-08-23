@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +22,13 @@ public class PostForm {
 	// null, 공백 => X
 	@NotEmpty(message="본문 내용을 반드시 입력해야 하는 필수 항목입니다.")
 	private String content;
+	
+	@Builder
+	public PostForm(String subject,	String content) {
+		super();
+		this.subject = subject;
+		this.content = content;
+	}
 	
 	
 }
