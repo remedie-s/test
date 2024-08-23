@@ -40,6 +40,7 @@ public class SecurityConfig {
 					( new AntPathRequestMatcher("/api/**") ).permitAll() )
 			.authorizeHttpRequests( ( a ) -> a.requestMatchers
 				( new AntPathRequestMatcher("/**") ).authenticated() )		
+			
 //			.csrf().disable()
 			.csrf( (b) -> 
 			b.ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")))
