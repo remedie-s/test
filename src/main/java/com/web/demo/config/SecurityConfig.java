@@ -20,6 +20,9 @@ import com.web.demo.service.TokenProvider;
 import com.web.demo.service.TokenService;
 import com.web.demo.service.UtilService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -69,6 +72,7 @@ public class SecurityConfig {
 	}
 	@Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+		log.info(""+authenticationConfiguration.toString());
         return authenticationConfiguration.getAuthenticationManager();
     }
 }

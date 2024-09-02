@@ -19,7 +19,7 @@ public class UtilService {
 		cookie.setPath("/");
 		response.addCookie(cookie);
 	}
-	public int toSecoundOfDay(int day) {
+	public int toSecondOfDay(int day) {
 		return 60*60*24*day;
 	}
 	

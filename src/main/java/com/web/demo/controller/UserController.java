@@ -83,8 +83,8 @@ public class UserController {
 		this.tokenService.saveRefreshToken(snsUser.getId(), refreshToekn);
 		   // FIXME #REFACT: 쿠키 생성 및 설정 코드를 모듈화 하여 대체
 		// 3. 토큰을 클라이언트에게 전달 => 쿠키 설정, 쿠키의 만료시간은 토큰의 만료시간과 동일하게 구성
-		utilService.setCookie("access_token", accessToken, utilService.toSecoundOfDay(7), response);
-		utilService.setCookie("refresh_token", refreshToekn, utilService.toSecoundOfDay(30), response);
+		utilService.setCookie("access_token", accessToken, utilService.toSecondOfDay(7), response);
+		utilService.setCookie("refresh_token", refreshToekn, utilService.toSecondOfDay(30), response);
 		
 		// 4. 자동 로그인을 미지원 하므로, 로그인 화면으로 자동 리다이렉트 처리 
 		return "redirect:/user/login"; // 현재는 홈페이지로 이동
@@ -111,7 +111,7 @@ public class UserController {
 		String accessToken = tokenService.createNewAccessToken(rToken, 27*7);
 		// 인증정보 추가(현재 생략)
 		// 쿠키 설정, 만료시간 7일
-		utilService.setCookie("access_token", accessToken, utilService.toSecoundOfDay(7), response);
+		utilService.setCookie("access_token", accessToken, utilService.toSecondOfDay(7), response);
 		// 화면이동(강제로 홈페이지로 이동, 컨셉)
 		return "redirect:/";
 	}
